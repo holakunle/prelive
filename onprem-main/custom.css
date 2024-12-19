@@ -6,7 +6,7 @@ therefore, it overrides all other definitions */
 
     --study-even-bg-color: rgb(55, 55, 60);
     --study-odd-bg-color: rgb(45, 45, 50);
-    --study-hover-color:  rgb(100, 98, 95);
+    --study-hover-color:  rgb(85, 117, 124);
     --study-selected-color: rgb(40, 40, 45);
     --study-details-bg-color: var(--study-selected-color);
 
@@ -27,17 +27,17 @@ therefore, it overrides all other definitions */
     --study-table-actions-bg-color: var(--study-table-filter-bg-color);
     
     --table-filters-is-searching-color: #fda90d86;
-    --table-filters-is-not-searching-color: rgb(30, 150, 255);
+    --table-filters-is-not-searching-color: rgb(57, 85, 145);
 
     --details-top-margin: 25px;
 
     --nav-bar-width: 260px;
 
     --nav-side-color: rgb(255, 255, 255);
-    --nav-side-bg-color: #1C3334;
+    --nav-side-bg-color: #1a3b3a;
     --nav-side-sub-bg-color: #181c20;
     --nav-side-selected-bg-color: #4f5b69;
-    --nav-side-hover-bg-color: #3e454d;
+    --nav-side-hover-bg-color: #7ba6c7;
     --nav-side-submenu-color: rgb(255, 255, 255);
     --nav-side-active-border-color: #d19b3d;
 

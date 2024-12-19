@@ -16,8 +16,8 @@ services:
 # if setting ENABLE_HTTPS: "true" env var, uncomment the following 4 lines and comment the line with 'ports: ["80:80"]'
     ports: ["443:443"]
     volumes:
-      - /home/holyfire/finalsetup/sslkeys/crt.pem:/etc/nginx/tls/crt.pem
-      - /home/holyfire/finalsetup/sslkeys/key.pem:/etc/nginx/tls/key.pem
+      - /home/pacsfmca/prelive/sslkeys/crt.pem:/etc/nginx/tls/crt.pem
+      - /home/pacsfmca/prelive/sslkeys/key.pem:/etc/nginx/tls/key.pem
     environment:
       ENABLE_ORTHANC: "true"
       ENABLE_KEYCLOAK: "true"
@@ -29,12 +29,12 @@ services:
       ENABLE_ORTHANC_FOR_API: "true"
 
   orthanc:
-    image: orthancteam/orthanc:24.9.1-full
+    image: orthancteam/orthanc:24.10.1-full
     volumes:
       - orthanc-storage:/var/lib/orthanc/db
-      - /home/holyfire/finalsetup/custom.css:/home/custom/custom.css
-      - /home/holyfire/finalsetup/logo.png:/home/custom/logo.png
-      - /home/holyfire/finalsetup/favicon.ico:/home/custom/favicon.ico
+      - /home/pacsfmca/prelive/custom.css:/home/custom/custom.css
+      - /home/pacsfmca/prelive/logo.png:/home/custom/logo.png
+      - /home/pacsfmca/prelive/favicon.ico:/home/custom/favicon.ico
 
     depends_on: [orthanc-db]
     ports: ["4242:4242", "8042:8042"]
@@ -53,7 +53,8 @@ services:
       CONNECTIVITY_CHECKS_PLUGIN_ENABLED: "true"
       WORKLISTS_PLUGIN_ENABLED: "true"
       TCIA_PLUGIN_ENABLED: "true"
-      VOLVIEW_PLUGIN_ENABLED: "true"
+      ORTHANC__TCIA__URL: "https://192.168.132.5/orthanc/tcia/app/index.html"
+      VOLVIEW_PLUGIN_ENABLED: "false"
       ORTHANC__PYTHON_VERBOSE: "true"
       ORTHANC__PYTHON_PLUGIN_ENABLED: "true"
       OSIMIS_WEB_VIEWER1_PLUGIN_ENABLED: "true"
@@ -74,6 +75,9 @@ services:
           "HttpPort" : 8042,
           "LuaHeartBeatPeriod" : 0,
           "LuaScripts" : [
+          ],
+          "plugins" : [
+            "/usr/share/orthanc/plugins"
           ],
           "ConcurrentJobs" : 8,
           "JobsEngineThreadsCount" : {
@@ -115,22 +119,20 @@ services:
           "DicomAlwaysAllowMove" : true,
           "DicomCheckModalityHost" : false,
           "DicomModalities" : {
-            "SANTEPACS" : [ "SANTESRVPG1", "192.168.43.230", 11122],
-            "CT-1" : [ "RADIANT", "192.168.43.11", 11112],
-            "CT-ROOM2" : [ "efilm", "192.168.43.36", 4006],
+            "CT1-WORKSTATION" : [ "ct99", "192.168.132.8", 4006],
+            "AW-WORKSTATION" : [ "aw01", "192.168.132.9", 4006],
+            "CT2-CONSOLE" : [ "efilm", "192.168.132.11", 4006],
+            "Mamography" : [ "fmcac8", "192.168.0.133", 11113],
+            "X-Ray-Specials" : [ "fmcac11", "192.168.43.10", 2323],
+            "US-1" : [ "fmcac9", "192.168.0.187", 1114],
+            "US-2-PHILLIPS" : [ "us1", "192.168.132.17", 104],
+            "GE-ECHO-MACHINE-1" : [ "echo1", "192.168.132.16", 1004],
+            "Echo-machine-2" : [ "fmcac5", "192.168.0.194", 1100],
             "Dental-x-ray" : [ "DENTALMAIN", "192.168.43.9", 104],
             "Eye-fundus-Camera" : [ "fmcac3", "192.168.0.184", 11118],
             "Eye-OCT" : [ "fmcac4", "192.168.0.184", 11119],
-            "Echo-machine-1" : [ "fmcac5", "192.168.0.194", 11110],
-            "Echo-machine-2" : [ "fmcac5", "192.168.0.194", 1100],
             "ECG-Machine" : [ "fmcac6", "192.168.0.64", 11111],
-            "Endoscopy-machine" : [ "fmcac7", "192.168.0.140", 11112],
-            "Mamography" : [ "fmcac8", "192.168.0.133", 11113],
-            "US-1" : [ "fmcac9", "192.168.0.187", 1114],
-            "US-2" : [ "fmcac10", "192.168.0.14", 2222],
-            "US-3" : [ "fmcac17", "192.168.0.200", 1826],
-            "x-ray" : [ "fmcac11", "192.168.43.10", 2323],
-            "Fluoroscopy" : [ "fmcac12", "192.168.43.190", 2424]
+            "Endoscopy-machine" : [ "fmcac7", "192.168.0.140", 11112]
           },
           "DicomModalitiesInDatabase" : false,
           "DicomEchoChecksFind" : false,
@@ -139,7 +141,7 @@ services:
           "DicomThreadsCount" : 4,
           "OrthancPeers" : {
             "CLOUD_SERVER" : [ "https://www.techxploit.com.ng/" ],
-            "PUBLIC_SERVER" : [ "http://192.168.43.195:8042/" ]
+            "PUBLIC_SERVER" : [ "http://192.168.132.6:8042/" ]
           },
           "OrthancPeersInDatabase" : false,
           "HttpProxy" : "",
@@ -209,23 +211,29 @@ services:
             "UiOptions": {
               "EnableOpenInMedDreamViewer": true,
               "EnableOpenInOhifViewer3": true,
+              "EnableOpenInVolView": true,
               "EnableStudyList": true,
               "EnableDownloadZip": true,
+              "EnableLinkToLegacyUi": true,
               "ShowOrthancName": true,
-              "MaxStudiesDisplayed": 5000,
               "MaxMyJobsHistorySize": 5,
               "EnableDownloadDicomDir": true,
+              "DateFormat": "dd/MM/yyyy",
               "EnableDownloadDicomFile": true,
               "EnableModification": true,
               "DefaultShareDuration": 0,
               "EnableApiViewMenu": true,
               "EnableEditLabels": true,
+              "EnableViewerQuickButton": true,
+              "EnableReportQuickButton": false,
               "StudyListSearchMode": "search-button",
               "StudyListContentIfNoSearch": "empty",
+              "MaxStudiesDisplayed": 100,
+              "MaxMyJobsHistorySize": 5,
               "ShareDurations": [0, 7, 15, 30, 90, 365],
-              "OhifViewer3PublicRoot": "https://192.168.43.215/ohif/",
+              "OhifViewer3PublicRoot": "https://192.168.132.5/ohif/",
               "ViewersIcons" : {
-                "osimis-web-viewer": "bi bi-eye",
+                "osimis-web-viewer": "bi bi-collection-play",
                 "stone-webviewer": "bi bi-eye-fill",
                 "ohif": "bi bi-grid",
                 "ohif-vr": "bi bi-grid-1x2",
@@ -302,7 +310,7 @@ services:
             },
             "Keycloak" : {
               "Enable": true,
-              "Url": "https://192.168.43.215/keycloak/",
+              "Url": "https://192.168.132.5/keycloak/",
               "Realm": "orthanc",
               "ClientId": "orthanc"
             }
@@ -341,18 +349,21 @@ services:
             "Triggers" : {
               "StorageCompressionChange": true,
               "MainDicomTagsChange": true,
+              "IngestTranscodingChange": true,
+              "DicomWebCacheChange": true,
               "UnnecessaryDicomAsJsonFiles": true
             }
           },
           "WholeSlideImaging" : {
             "EnableIIIF" : true,
-            "OrthancPublicURL" : "https://192.168.43.215/orthanc/ui/app",
+            "OrthancPublicURL" : "https://192.168.132.5/orthanc/ui/app",
             "ServeMirador" : true,
             "ServeOpenSeadragon" : true,
             "ForcePowersOfTwoScaleFactors" : true
           },
           "Tcia" : {
-            "Enable" : true
+            "Enable" : true,
+            "path" : "https://192.168.132.5/tcia/app/index.html"
           }
         }
 
@@ -366,15 +377,15 @@ services:
     environment:
       SECRET_KEY: "change-me-I-am-a-secret-key"
       ENABLE_KEYCLOAK: "true"
-      PUBLIC_ORTHANC_ROOT: "https://192.168.43.215/orthanc/"
-      PUBLIC_LANDING_ROOT: "https://192.168.43.215/orthanc/ui/app/token-landing.html"
+      PUBLIC_ORTHANC_ROOT: "https://192.168.132.5/orthanc/"
+      PUBLIC_LANDING_ROOT: "https://192.168.132.5/orthanc/ui/app/token-landing.html"
       USERS: |
         {
           "share-user": "change-me"
         }
       MEDDREAM_TOKEN_SERVICE_URL: "http://meddream-token-service:8088/v3/generate"
-      PUBLIC_MEDDREAM_ROOT: "https://192.168.43.215/meddream/"
-      PUBLIC_OHIF_ROOT: "https://192.168.43.215/ohif/"
+      PUBLIC_MEDDREAM_ROOT: "https://192.168.132.5/meddream/"
+      PUBLIC_OHIF_ROOT: "https://192.168.132.5/ohif/"
 
   orthanc-db:
     image: postgres:15
@@ -388,10 +399,10 @@ services:
     depends_on: [keycloak-db]
     restart: unless-stopped
     volumes:
-      - /home/holyfire/finalsetup/images/orthanc-bg.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-bg.png
-      - /home/holyfire/finalsetup/images/orthanc-logo.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo.png
-      - /home/holyfire/finalsetup/images/orthanc-logo-text.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo-text.png
-      - /home/holyfire/finalsetup/images/orthanc-logo-text-shadow.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo-text-shadow.png
+      - /home/pacsfmca/prelive/images/orthanc-bg.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-bg.png
+      - /home/pacsfmca/prelive/images/orthanc-logo.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo.png
+      - /home/pacsfmca/prelive/images/orthanc-logo-text.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo-text.png
+      - /home/pacsfmca/prelive/images/orthanc-logo-text-shadow.png:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo-text-shadow.png
     environment:
       KEYCLOAK_ADMIN: "admin"
       KEYCLOAK_ADMIN_PASSWORD: "change-me"
@@ -399,8 +410,8 @@ services:
       KC_DB_URL: "jdbc:postgresql://keycloak-db:5432/keycloak"
       KC_DB_USERNAME: "keycloak"
       KC_DB_PASSWORD: "keycloak"
-      KC_HOSTNAME_URL: "https://192.168.43.215/keycloak"
-      KC_HOSTNAME_ADMIN_URL: "https://192.168.43.215/keycloak"
+      KC_HOSTNAME_URL: "https://192.168.132.5/keycloak"
+      KC_HOSTNAME_ADMIN_URL: "https://192.168.132.5/keycloak"
 
   keycloak-db:
     image: postgres:15
@@ -420,7 +431,7 @@ services:
 #  customize ohif configuration applied
     volumes:
       - ./ohif.js:/usr/share/nginx/html/app-config.js
-      - ./ohif-logo.svg:/usr/share/nginx/html/ohif-logo.svg:ro
+#      - ./ohif-logo.svg:/usr/share/nginx/html/ohif-logo.svg:ro
 #      - ./ohif-logo-light.svg:/usr/share/nginx/html/ohif-logo-light.svg:ro
     restart: unless-stopped
 
@@ -436,7 +447,7 @@ services:
       ORTHANC_USER: "meddream-user"
       ORTHANC_PWD: "change-me"
       ORTHANC_MEDDREAM_PYTHON_PLUGIN_ENABLED: "true"
-      MEDDREAM_ADMIN_PASSWORD: "change-me"
+      MEDDREAM_ADMIN_PASSWORD: "demo"
       MEDDREAM_PACS_CONFIG_TYPE: "Dicomweb"
       ORTHANC_HOSTNAME: "orthanc-for-api"
       ORTHANC_DICOM_PORT: 4242

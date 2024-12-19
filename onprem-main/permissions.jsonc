@@ -6,11 +6,11 @@
       "authorized_labels": ["*"]
     },
     "doctor": {
-      "permissions":["view", "share", "send", "download"],
+      "permissions":["q-r-remote-modalities", "view", "share", "send"],
       "authorized_labels": ["*"]
     },
     "radiographer": {
-      "permissions":["view", "share", "download"],
+      "permissions":["q-r-remote-modalities", "view", "send", "share"],
       "authorized_labels": ["*"]
     },
     "external-role": {
@@ -21,8 +21,8 @@
       "permissions":["view", "q-r-remote-modalities", "upload", "download", "send"],
       "authorized_labels": ["*"]
     },
-    "scientic-officer": {
-      "permissions":["view", "download", "send", "upload"],
+    "scientific-officer": {
+      "permissions":["view", "send", "upload"],
       "authorized_labels": ["non-invasive"]
     },
     "front-desk": {
