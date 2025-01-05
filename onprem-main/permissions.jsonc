@@ -10,7 +10,7 @@
       "authorized_labels": ["*"]
     },
     "radiographer": {
-      "permissions":["q-r-remote-modalities", "view", "send", "share"],
+      "permissions":["q-r-remote-modalities", "edit-labels", "view", "send", "share"],
       "authorized_labels": ["*"]
     },
     "external-role": {
@@ -18,7 +18,7 @@
       "authorized_labels": ["external"]
     },
     "pacs-admin": {
-      "permissions":["view", "q-r-remote-modalities", "upload", "download", "send"],
+      "permissions":["view", "edit-labels", "q-r-remote-modalities", "modify", "share", "download", "send"],
       "authorized_labels": ["*"]
     },
     "scientific-officer": {
@@ -27,7 +27,7 @@
     },
     "front-desk": {
       "permissions":["view"],
-      "authorized_labels": ["*"]
+      "authorized_labels": ["external"]
     }
   }
 }
