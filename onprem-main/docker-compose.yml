@@ -8,7 +8,7 @@
 services:
 
   nginx:
-    image: orthancteam/orthanc-nginx:24.9.1
+    image: orthancteam/orthanc-nginx:24.12.1
     depends_on: [orthanc, orthanc-auth-service, orthanc-for-api, meddream-viewer, keycloak]
     restart: unless-stopped
 #    ports: ["8080:80"]
@@ -28,7 +28,7 @@ services:
       ENABLE_ORTHANC_FOR_API: "true"
 
   orthanc:
-    image: orthancteam/orthanc:24.10.3-full
+    image: orthancteam/orthanc:24.12.0-full
     volumes:
       - orthanc-storage:/var/lib/orthanc/db
       - /home/main/Documents/prelive/orthanc.json:/etc/orthanc/orthanc.json:ro
@@ -66,7 +66,7 @@ services:
       ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__SHOW_SAME_PATIENT_STUDIES_FILTER: '["PatientBirthDate"]'
 
   orthanc-auth-service:
-    image: orthancteam/orthanc-auth-service:24.9.1
+    image: orthancteam/orthanc-auth-service:24.12.1
     depends_on: [keycloak, meddream-token-service]
     # permissions can be customized in the permissions.json file
     volumes:
@@ -93,7 +93,7 @@ services:
       POSTGRES_HOST_AUTH_METHOD: "trust"
 
   keycloak:
-    image: orthancteam/orthanc-keycloak:24.7.2
+    image: orthancteam/orthanc-keycloak:24.12.1
     depends_on: [keycloak-db]
     restart: unless-stopped
     volumes:
@@ -125,7 +125,7 @@ services:
     restart: unless-stopped
 
   ohif:
-    image: orthancteam/ohif-v3:24.9.1
+    image: orthancteam/ohif-v3:24.12.1
 #  customize ohif configuration applied
     volumes:
       - ./ohif-v3.js:/usr/share/nginx/html/app-config.js
@@ -155,7 +155,7 @@ services:
 
   # An orthanc dedicated for API accesses and also used by MedDream
   orthanc-for-api:
-    image: orthancteam/orthanc:24.10.3-full
+    image: orthancteam/orthanc:24.12.0-full
     volumes:
       - orthanc-storage:/var/lib/orthanc/db
       - ./meddream-plugin.py:/scripts/meddream-plugin.py
