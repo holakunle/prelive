@@ -1,3 +1,7 @@
+//This file contains permissions for various roles
+// permissions not included for this non admin roles includes
+// [delete, anonymize, settings, api-view, upload]
+
 
 {
   "roles" : {
