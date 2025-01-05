@@ -1,0 +1,92 @@
+/* Updated dark css with table arrangement and text size modifications,
+this is still under review */
+
+
+:root {
+    --bootstrap-theme: dark;
+
+    --study-even-bg-color: rgb(45, 45, 50);
+    --study-odd-bg-color: rgb(45, 45, 50);
+    --study-hover-color:  rgb(85, 117, 124);
+    --study-selected-color: rgb(40, 40, 45);
+    --study-details-bg-color: var(--study-selected-color);
+
+    --series-even-bg-color: rgb(45, 45, 50);
+    --series-odd-bg-color: rgb(35, 35, 40);
+    --series-hover-color:  var(--study-hover-color);
+    --series-selected-color: rgb(30, 30, 35);
+    --series-details-bg-color: var(--series-selected-color);
+
+    --instance-odd-bg-color: rgb(35, 35, 40);
+    --instance-even-bg-color: rgb(30, 30, 35);
+    --instance-hover-color:  var(--study-hover-color);
+    --instance-selected-color: rgb(20, 20, 25);
+    --instance-details-bg-color: var(--instance-selected-color);
+
+    --study-table-header-bg-color: #3h1833;
+    --study-table-filter-bg-color: rgb(60, 60, 59);
+    --study-table-actions-bg-color: var(--study-table-filter-bg-color);
+
+    --table-filters-is-searching-color: #fda90d86;
+    --table-filters-is-not-searching-color: rgb(57, 85, 145);
+
+    --details-top-margin: 25px;
+
+    --nav-bar-width: 260px;
+
+    --nav-side-color: rgb(255, 255, 255);
+    --nav-side-bg-color: #0c2833;
+    --nav-side-sub-bg-color: #181c20;
+    --nav-side-selected-bg-color: #4f5b69;
+    --nav-side-hover-bg-color: #7ba6c7;
+    --nav-side-submenu-color: rgb(255, 255, 255);
+    --nav-side-active-border-color: #d19b3d;
+
+    --label-bg-color: rgb(61, 116, 141);
+
+    --form-placeholder-color: #888;
+
+    /* you may also customize global bootstrap variables */
+    --bs-border-color: rgb(110, 160, 200);
+    --bs-info-rgb: 255, 26, 35;
+
+    /* Text Style Options */
+    --text-primary: #FFFFFF; /* Default text color */
+    --text-secondary: #666; /* Secondary text color */
+    --text-accent: #007bff; /* Accent color */
+    --text-heading: #212529; /* Heading text color */
+    --font-size-base: 15px; /* Base font size */
+    --font-family-sans-serif: 'Open Sans', sans-serif; /* Example font family */
+
+
+}
+
+/* datepicker variables */
+.dp__theme_dark {
+    --dp-border-color: var(--bs-border-color);
+}
+
+/* optional, you may e.g. customize bootstrap buttons or any other class that is declared globally */
+
+/*
+.btn-primary {
+    --bs-btn-color: white;
+    --bs-btn-bg: red;
+}  */
+
+/* Global Text Styles */
+body {
+  font-family: var(--font-family-sans-serif);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-heading);
+}
+
+/* Example Usage: Applying Text Styles */
+.important-text {
+  color: var(--text-accent);
+  font-weight: bold;
+}
