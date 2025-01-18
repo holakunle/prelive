@@ -51,7 +51,7 @@ services:
       WORKLISTS_PLUGIN_ENABLED: "true"
       TCIA_PLUGIN_ENABLED: "true"
       ORTHANC__TCIA__URL: "https://192.168.132.5/orthanc/tcia/app/index.html"
-      VOLVIEW_PLUGIN_ENABLED: "false"
+      VOLVIEW_PLUGIN_ENABLED: "true"
       ORTHANC__PYTHON_VERBOSE: "true"
       ORTHANC__PYTHON_PLUGIN_ENABLED: "true"
       OSIMIS_WEB_VIEWER1_PLUGIN_ENABLED: "true"
