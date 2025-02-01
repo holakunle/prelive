@@ -1,0 +1,15 @@
+{
+  
+  "DicomWeb" : {
+    "Servers" : {
+      "auth-service-demo": {
+        "Url": "https://www.techxploit.com.ng/orthanc-api/dicom-web/",
+        "CertificateFile": "/etc/orthanc/fullchain.pem",
+        "CertificateKeyFile": "/etc/orthanc/privkey.pem",
+        "Username": "dicom-web-client-user",
+        "Password": "change-me"
+      }
+    }
+  }
+}
+
