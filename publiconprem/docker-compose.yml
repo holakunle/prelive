@@ -14,6 +14,11 @@ services:
     volumes:
       - ./orthanc.json:/etc/orthanc/orthanc.json:ro
       - final_db:/var/lib/orthanc/db/
+    # uncomment the following line to enable the DICOM-Web Viewer Plugin
+    #  - ./fullchain.pem:/etc/orthanc/fullchain.pem:ro
+    #  - ./privkey.pem:/etc/orthanc/privkey.pem:ro
+    #  - ./dicomweb.json:/etc/orthanc/dicomweb.json:ro
+    #  - ./fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
       # - ./ohif.js:/usr/share/nginx/html/app-config.js:ro
     restart: unless-stopped
 
