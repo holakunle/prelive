@@ -66,7 +66,7 @@
   "HttpVerbose" : false,
   "HttpTimeout" : 60,
   "HttpsVerifyPeers" : true,
-  "HttpsCACertificates" : "/etc/ssl/certs/ca-certificates.crt",
+  "HttpsCACertificates" : "/etc/ssl/certs/fullchain.pem",
   "UserMetadata" : {
     // "Sample" : 1024
   },
@@ -103,7 +103,7 @@
   "StorageCommitmentReportsSize" : 100,
   "TranscodeDicomProtocol" : true,
   "BuiltinDecoderTranscoderOrder" : "After",
-  "IngestTranscoding" : "1.2.840.10008.1.2.4.91",
+  "IngestTranscoding" : "1.2.840.10008.1.2.4.70",
   "IngestTranscodingOfUncompressed" : true,
   "IngestTranscodingOfCompressed" : true,
   "DicomLossyTranscodingQuality" : 90,
