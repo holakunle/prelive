@@ -4,14 +4,21 @@ services:
     container_name: orthanc
     image: orthancteam/orthanc:24.12.0
     environment:
-      - DICOM_WEB_PLUGIN_ENABLED=true
-      - OHIF_PLUGIN_ENABLED=true
+      DICOM_WEB_PLUGIN_ENABLED: "true"
+      OHIF_PLUGIN_ENABLED: "true"
+      DICOM_WEB: "/etc/orthanc/dicomweb.json"
+      ORTHANC_LOG_LEVEL: "verbose"
     ports:
       - 4242:4242 
       - 8042:8042
     volumes:
       - ./orthanc.json:/etc/orthanc/orthanc.json:ro
-      - testdata_db:/var/lib/orthanc/db/
+      - final_db:/var/lib/orthanc/db/
+    # uncomment the following line to enable the DICOM-Web Viewer Plugin
+    #  - ./fullchain.pem:/etc/orthanc/fullchain.pem:ro
+    #  - ./privkey.pem:/etc/orthanc/privkey.pem:ro
+    #  - ./dicomweb.json:/etc/orthanc/dicomweb.json:ro
+    #  - ./fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
       # - ./ohif.js:/usr/share/nginx/html/app-config.js:ro
     restart: unless-stopped
 
@@ -27,6 +34,7 @@ services:
       - ./logo.png:/usr/share/nginx/html/logo.png:ro
     restart: unless-stopped
 
+# still currently running version 2 of OHIF until version 3 is stable for production for PDF viewing 
   ohif_v3:
     image: ohif/app:v3.9.2
     ports:
@@ -37,4 +45,4 @@ services:
     restart: unless-stopped
 
 volumes: 
-  testdata_db:
+  final_db:
