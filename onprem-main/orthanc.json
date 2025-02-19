@@ -164,7 +164,6 @@
               "StudyListContentIfNoSearch": "empty",
               "MaxStudiesDisplayed": 150,
               "PageLoadSize": 50,
-              "MaxMyJobsHistorySize": 5,
               "ShareDurations": [0, 7, 15, 30, 90, 365],
               "OhifViewer3PublicRoot": "https://192.168.132.5/ohif/",
               "ViewersIcons" : {
