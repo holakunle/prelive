@@ -1,19 +1,19 @@
 {
-  "Name" : "FMCAS2",
+  "Name" : "ONPREM STORAGE",
   "StorageDirectory" : "/var/lib/orthanc/db",
   "IndexDirectory" : "/var/lib/orthanc/db",
-  "StorageCompression" : true,
+  "StorageCompression" : false,
   "MaximumStorageSize" : 0,
   "MaximumPatientCount" : 0,
   "MaximumStorageCacheSize" : 128,
-  "LuaScripts" : [
+  "LuaScripts" : [ "/etc/share/orthanc/scripts/job-failure.lua"
   ],
   "Plugins" : [ 
     "/usr/share/orthanc/plugins", "/usr/local/share/orthanc/plugins"
   ],
-  "ConcurrentJobs" : 7,
+  "ConcurrentJobs" : 5,
   "HttpServerEnabled" : true,
-  "OrthancExplorerEnabled" : true,
+  "OrthancExplorerEnabled" : false,
   "HttpPort" : 8042,
   "HttpDescribeErrors" : true,
   "HttpCompressionEnabled" : true,
@@ -24,7 +24,7 @@
   "WebDavDeleteAllowed" : false,
   "WebDavUploadAllowed" : true,
   "DicomServerEnabled" : true,
-  "DicomAet" : "MAPDR",
+  "DicomAet" : "FMCAS2",
   "DicomCheckCalledAet" : true,
   "DicomPort" : 4243,
   "DefaultEncoding" : "Latin1",
@@ -42,7 +42,7 @@
     "test" : "test"
   },
   "DicomTlsEnabled" : false,
-  "DicomTlsRemoteCertificateRequired" : true,
+  "DicomTlsRemoteCertificateRequired" : false,
   "DicomAlwaysAllowEcho" : true,
   "DicomAlwaysAllowStore" : true,
   "DicomAlwaysAllowFind" : false,
@@ -51,7 +51,7 @@
   "DicomAlwaysAllowMove" : false,
   "DicomCheckModalityHost" : false,
   "DicomModalities" : {
-      // "MAPDRX" : [ "MAPDR", "127.0.0.1", 11112]
+
   },
   "DicomModalitiesInDatabase" : false,
   "DicomEchoChecksFind" : false,
@@ -59,13 +59,14 @@
   "DicomScuPreferredTransferSyntax" : "1.2.840.10008.1.2.1",
   "DicomThreadsCount" : 4,
   "OrthancPeers" : {
+    //   "CLOUD" : [ "CLOUDMAIN", "https://www.techxploit.com.ng", 4242]
   },
 
   "OrthancPeersInDatabase" : false,
   "HttpProxy" : "",
   "HttpVerbose" : false,
   "HttpTimeout" : 60,
-  "HttpsVerifyPeers" : true,
+  "HttpsVerifyPeers" : false,
   "HttpsCACertificates" : "/etc/ssl/certs/fullchain.pem",
   "UserMetadata" : {
     // "Sample" : 1024
@@ -118,6 +119,37 @@
   "Warnings" : {
     "W001_TagsBeingReadFromStorage": true,
     "W002_InconsistentDicomTagsInDb": true
+  },
+  "OrthancExplorer2": {
+    "IsDefaultUI": true,
+    "Theme": "dark",
+    "Root": "/public-ui/",
+    "CustomLogoPath": "/home/custom/logo1.png",
+    "CustomTitle": "ONPREM STORAGE PACS",
+    "UiOptions": {
+      "ShowOrthancName": true,
+      "MaxMyJobsHistorySize": 7,
+      "EnableDeleteResources": false,
+      "EnableSettings": false,
+      "EnableLinkToLegacyUi": false,
+      "EnableDownloadZip": false,
+      "EnableDownloadDicomDir": false,
+      "EnableDownloadDicomFile": false,
+      "DefaultShareDuration": 0,
+      "EnableApiViewMenu": false,
+      "EnableEditLabels": false,
+      "EnableAnonymization": false,
+      "EnableUpload": false,
+      "EnableShares": false,
+      "DateFormat": "dd/MM/yyyy",
+      "EnableModification": false,
+      "EnableAddSeries": false,
+      "StudyListSearchMode": "search-as-you-type",
+      "StudyListSearchAsYouTypeDelay": 400,
+      "StudyListSearchAsYouTypeMinChars": 3,
+      "StudyListContentIfNoSearch": "most-recents",
+      "DefaultShareDuration": 0,
+      "ShareDurations": [0, 7, 15, 30, 60, 90, 365]
+    }
   }
-
 }
