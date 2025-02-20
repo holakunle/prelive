@@ -148,7 +148,6 @@
       "StudyListSearchAsYouTypeDelay": 400,
       "StudyListSearchAsYouTypeMinChars": 3,
       "StudyListContentIfNoSearch": "most-recents",
-      "DefaultShareDuration": 0,
       "ShareDurations": [0, 7, 15, 30, 60, 90, 365]
     }
   }
