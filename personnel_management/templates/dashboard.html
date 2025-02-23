@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Personnel Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+<body class="dashboard-page" style="background-color: {{ session.get('background', '#e0f7e0') }};">
+    <div class="dashboard-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <div class="sidebar">
+            <h3>User Info</h3>
+            <p>Staff ID: {{ staff_id }}</p>
+            <p>Role: {{ role }}</p>
+            <form method="POST">
+                <input type="hidden" name="action" value="change_bg">
+                <label for="background">Change Background:</label>
+                <select id="background" name="background" onchange="this.form.submit()">
+                    <option value="#e0f7e0">Green</option>
+                    <option value="#ffffff">White</option>
+                    <option value="#f0f0f0">Light Gray</option>
+                </select>
+            </form>
+            {% if role == 'Admin' %}
+                <a href="{{ url_for('manage_users') }}" class="manage-btn">Manage Users</a>
+            {% endif %}
+            {% if role in ['Manager', 'Admin'] %}
+                <a href="{{ url_for('manage_leaves') }}" class="manage-btn">Manage Leaves</a>
+                <a href="{{ url_for('manage_schedules') }}" class="manage-btn">Manage Schedules</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+        <div class="main-content">
+            <h2>Welcome, {{ staff_id }}</h2>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash">{{ messages[0] }}</div>
+                {% endif %}
+            {% endwith %}
+            <details class="section">
+                <summary>Email</summary>
+                <form method="POST">
+                    <input type="hidden" name="action" value="send_email">
+                    <input type="email" name="recipient" placeholder="Recipient" required>
+                    <input type="text" name="subject" placeholder="Subject" required>
+                    <textarea name="body" placeholder="Message" required></textarea>
+                    <button type="submit">Send Email</button>
+                </form>
+            </details>
+            {% if role in ['Employee', 'Manager'] %}
+                <details class="section">
+                    <summary>Set Availability</summary>
+                    <form method="POST">
+                        <input type="hidden" name="action" value="set_availability">
+                        <label for="day">Day:</label>
+                        <select name="day" required>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                        <label for="start_time">Start Time:</label>
+                        <input type="time" name="start_time" required>
+                        <label for="end_time">End Time:</label>
+                        <input type="time" name="end_time" required>
+                        <button type="submit">Add Availability</button>
+                    </form>
+                </details>
+                <details class="section">
+                    <summary>Your Availability</summary>
+                    <table>
+                        <tr>
+                            <th>Day</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                        </tr>
+                        {% for day, slots in availability.items() %}
+                            {% for slot in slots %}
+                                <tr>
+                                    <td>{{ day }}</td>
+                                    <td>{{ slot['start_time'] }}</td>
+                                    <td>{{ slot['end_time'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </table>
+                </details>
+                <details class="section">
+                    <summary>Apply for Leave</summary>
+                    <form method="POST">
+                        <input type="hidden" name="action" value="apply_leave">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" name="start_date" required>
+                        <label for="end_date">End Date:</label>
+                        <input type="date" name="end_date" required>
+                        <label for="reason">Reason:</label>
+                        <textarea name="reason" placeholder="Reason for leave (min 5 characters)" required></textarea>
+                        <button type="submit">Submit Leave Request</button>
+                    </form>
+                </details>
+                <details class="section">
+                    <summary>Your Leave Requests</summary>
+                    <table>
+                        <tr>
+                            <th>Leave ID</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                        {% for leave_id, leave in leaves.items() %}
+                            <tr>
+                                <td>{{ leave_id }}</td>
+                                <td>{{ leave['start_date'] }}</td>
+                                <td>{{ leave['end_date'] }}</td>
+                                <td>{{ leave['reason'] }}</td>
+                                <td>{{ leave['status'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </details>
+                <details class="section">
+                    <summary>Your Schedule</summary>
+                    <table>
+                        <tr>
+                            <th>Shift ID</th>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                        </tr>
+                        {% for shift_id, shift in schedules.items() %}
+                            <tr>
+                                <td>{{ shift_id }}</td>
+                                <td>{{ shift['date'] }}</td>
+                                <td>{{ shift['start_time'] }}</td>
+                                <td>{{ shift['end_time'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </details>
+                <details class="section">
+                    <summary>Request Payslip</summary>
+                    <form method="POST">
+                        <input type="hidden" name="action" value="request_payslip">
+                        <button type="submit">Request Payslip</button>
+                    </form>
+                </details>
+            {% endif %}
+            {% if role == 'Manager' %}
+                <details class="section">
+                    <summary>Manager Tools</summary>
+                    <p>Manage schedules from the <a href="{{ url_for('manage_schedules') }}">Schedules</a> page.</p>
+                </details>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

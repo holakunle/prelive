@@ -1,0 +1,29 @@
+/* Existing styles remain unchanged, add the following: */
+
+details.section {
+    margin: 10px 0;
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+summary {
+    padding: 10px;
+    background-color: #2e7d32;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+    font-weight: bold;
+}
+
+summary:hover {
+    background-color: #1b5e20;
+}
+
+details[open] > summary {
+    border-bottom: 1px solid #ccc;
+}
+
+details > form, details > table, details > p {
+    padding: 10px;
+}

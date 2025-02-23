@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Schedules - Personnel Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+<body class="dashboard-page" style="background-color: {{ session.get('background', '#e0f7e0') }};">
+    <div class="dashboard-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <div class="sidebar">
+            <h3>{{ current_user.get_role() }} Panel</h3>
+            <a href="{{ url_for('dashboard') }}" class="manage-btn">Back to Dashboard</a>
+            {% if current_user.get_role() == 'Admin' %}
+                <a href="{{ url_for('manage_users') }}" class="manage-btn">Manage Users</a>
+            {% endif %}
+            <a href="{{ url_for('manage_leaves') }}" class="manage-btn">Manage Leaves</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+        <div class="main-content">
+            <h2>Manage Schedules</h2>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash">{{ messages[0] }}</div>
+                {% endif %}
+            {% endwith %}
+            <details class="section">
+                <summary>Add Shift</summary>
+                <form method="POST">
+                    <input type="hidden" name="action" value="add_shift">
+                    <label for="staff_id">Employee:</label>
+                    <select name="staff_id" required>
+                        {% for staff_id, info in users.items() %}
+                            {% if info['role'] != 'Admin' %}
+                                <option value="{{ staff_id }}">{{ staff_id }} ({{ info['role'] }})</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label for="date">Date:</label>
+                    <input type="date" name="date" required>
+                    <label for="start_time">Start Time:</label>
+                    <input type="time" name="start_time" required>
+                    <label for="end_time">End Time:</label>
+                    <input type="time" name="end_time" required>
+                    <button type="submit">Add Shift</button>
+                </form>
+            </details>
+            <details class="section">
+                <summary>Employee Availability</summary>
+                <table>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Day</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                    {% for staff_id, days in availability.items() %}
+                        {% for day, slots in days.items() %}
+                            {% for slot in slots %}
+                                <tr>
+                                    <td>{{ staff_id }}</td>
+                                    <td>{{ day }}</td>
+                                    <td>{{ slot['start_time'] }}</td>
+                                    <td>{{ slot['end_time'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                </table>
+            </details>
+            <details class="section">
+                <summary>All Schedules</summary>
+                <table>
+                    <tr>
+                        <th>Shift ID</th>
+                        <th>Staff ID</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for shift_id, shift in schedules.items() %}
+                        <tr>
+                            <td>{{ shift_id }}</td>
+                            <td>{{ shift['staff_id'] }}</td>
+                            <td>{{ shift['date'] }}</td>
+                            <td>{{ shift['start_time'] }}</td>
+                            <td>{{ shift['end_time'] }}</td>
+                            <td>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="action" value="delete_shift">
+                                    <input type="hidden" name="shift_id" value="{{ shift_id }}">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </details>
+        </div>
+    </div>
+</body>
+</html>
