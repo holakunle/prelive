@@ -1,23 +1,23 @@
-function OnStoredInstance(instanceId, tags, metadata)
-    local studyId = GetParentResource(instanceId, "Study")
-    if studyId then
-        local success, err = pcall(SetLabel, studyId, "NEW")
-        if not success then
-            print("Error setting label for stored instance: " .. err)
-        end
-    else
-        print("Study ID not found for stored instance: " .. instanceId)
+function makeValidLabel(input)
+    return input:gsub("[^%w_-]", "-")
+  end
+  
+  function OnStoredInstance(instanceId, tags, metadata)
+    local study = ParseJson(RestApiGet("/instances/" .. instanceId .. "/study"))
+    local series = ParseJson(RestApiGet("/instances/" .. instanceId .. "/series"))
+    local isFirstInstance = (#study.Series == 1 and #series.Instances == 1)
+  
+    if isFirstInstance and #study.Labels == 0 then
+      RestApiPut("/studies/" .. study.ID .. "/labels/NEW", '')
+    elseif not isFirstInstance then
+      RestApiPut("/studies/" .. study.ID .. "/labels/MODIFIED", '')
     end
-end
-
-function OnModifiedInstance(instanceId, tags, metadata, origin)
-    local studyId = GetParentResource(instanceId, "Study")
-    if studyId then
-        local success, err = pcall(SetLabel, studyId, "MODIFIED")
-        if not success then
-            print("Error setting label for modified instance: " .. err)
-        end
-    else
-        print("Study ID not found for modified instance: " .. instanceId)
+  end
+  
+  function OnModifiedInstance(instanceId, tags, metadata, origin)
+    local study = ParseJson(RestApiGet("/instances/" .. instanceId .. "/study"))
+    if origin == "dicom-tag-modification" then
+      RestApiPut("/studies/" .. study.ID .. "/labels/MODIFIED", '')
     end
-end
+  end
+  
