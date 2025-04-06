@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email - Medical Imaging Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            color: #333;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            height: 100%;
+            position: fixed;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ddd;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .menu-item {
+            padding: 15px 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background: #34495e;
+        }
+
+        .menu-item.active {
+            background: #34495e;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 40px;
+            width: calc(100% - 250px);
+            overflow-y: auto;
+        }
+
+        .email-header {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+
+        .email-header i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 55px;
+            color: #888;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #555;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .tab i {
+            margin-right: 5px;
+        }
+
+        .tab:hover {
+            color: #2c3e50;
+        }
+
+        .tab.active {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .email-form, .email-list {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .email-form.active, .email-list.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input ziekte,
+        .form-group textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .form-group textarea {
+            height: 200px;
+            resize: vertical;
+        }
+
+        .email-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .email-item:hover {
+            background: #f9f9f9;
+        }
+
+        .email-item:last-child {
+            border-bottom: none;
+        }
+
+        .email-checkbox {
+            margin-right: 10px;
+        }
+
+        .email-sender {
+            flex: 1;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .email-subject {
+            flex: 2;
+            color: #555;
+        }
+
+        .email-time {
+            flex: 1;
+            text-align: right;
+            color: #888;
+            font-size: 12px;
+        }
+
+        .action-bar {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .action-bar.active {
+            display: block;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <img src="/middle-page/profile-placeholder.jpg" alt="Profile" class="profile-img" id="profilePic">
+            <span class="profile-name" id="userName">User Name</span>
+        </div>
+        <div class="menu-item" id="newMail" onclick="showSection('newMail')">
+            <i class="fas fa-plus"></i> New Mail
+        </div>
+        <div class="menu-item active" id="inbox" onclick="showSection('inbox')">
+            <i class="fas fa-inbox"></i> Inbox
+        </div>
+        <div class="menu-item" id="outbox" onclick="showSection('outbox')">
+            <i class="fas fa-paper-plane"></i> Outbox
+        </div>
+        <div class="menu-item" id="sent" onclick="showSection('sent')">
+            <i class="fas fa-check"></i> Sent
+        </div>
+        <div class="menu-item" onclick="window.location.href='/middle-page/html/index.html'">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="email-header">
+            <i class="fas fa-envelope"></i> Email
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search mail...">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <div class="email-form" id="newMailForm">
+            <div class="form-group">
+                <label for="to">To:</label>
+                <input type="email" id="to" placeholder="recipient@example.com">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" placeholder="Subject">
+            </div>
+            <div class="form-group">
+                <label for="body">Message:</label>
+                <textarea id="body" placeholder="Type your message here..."></textarea>
+            </div>
+            <button onclick="sendMail()">Send</button>
+        </div>
+
+        <div class="email-list active" id="inboxList">
+            <div class="tabs">
+                <div class="tab active" data-tab="primary" onclick="showTab('primary')">
+                    <i class="fas fa-inbox"></i> Primary
+                </div>
+                <div class="tab" data-tab="social" onclick="showTab('social')">
+                    <i class="fas fa-users"></i> Social
+                </div>
+                <div class="tab" data-tab="promotions" onclick="showTab('promotions')">
+                    <i class="fas fa-tag"></i> Promotions
+                </div>
+            </div>
+            <div class="tab-content" id="primary">
+                <div class="email-item">
+                    <input type="checkbox" class="email-checkbox" onchange="toggleDeleteButton()">
+                    <span class="email-sender">Dr. Johnson</span>
+                    <span class="email-subject">Patient X-Ray Results</span>
+                    <span class="email-time">10:30 AM</span>
+                </div>
+                <div class="email-item">
+                    <input type="checkbox" class="email-checkbox" onchange="toggleDeleteButton()">
+                    <span class="email-sender">Nurse Sarah</span>
+                    <span class="email-subject">Urgent: MRI Review Needed</span>
+                    <span class="email-time">Yesterday</span>
+                </div>
+            </div>
+            <div class="tab-content" id="social" style="display: none;">
+                <div class="email-item">
+                    <input type="checkbox" class="email-checkbox" onchange="toggleDeleteButton()">
+                    <span class="email-sender">Team Chat</span>
+                    <span class="email-subject">Weekly Meeting Reminder</span>
+                    <span class="email-time">Apr 5</span>
+                </div>
+            </div>
+            <div class="tab-content" id="promotions" style="display: none;">
+                <div class="email-item">
+                    <input type="checkbox" class="email-checkbox" onchange="toggleDeleteButton()">
+                    <span class="email-sender">Admin Team</span>
+                    <span class="email-subject">System Update Notification</span>
+                    <span class="email-time">Apr 5</span>
+                </div>
+            </div>
+            <div class="action-bar" id="actionBar">
+                <button class="delete-btn" onclick="deleteSelected()">Delete Selected</button>
+            </div>
+        </div>
+
+        <div class="email-list" id="outboxList">
+            <div class="email-item">
+                <span class="email-sender">To: Dr. Lee</span>
+                <span class="email-subject">Consultation Request</span>
+                <span class="email-time">Pending</span>
+            </div>
+            <div class="email-item">
+                <span class="email-sender">To: Radiology Dept</span>
+                <span class="email-subject">Study Assignment</span>
+                <span class="email-time">Pending</span>
+            </div>
+        </div>
+
+        <div class="email-list" id="sentList">
+            <div class="email-item">
+                <span class="email-sender">To: Dr. Patel</span>
+                <span class="email-subject">Report Completed</span>
+                <span class="email-time">Apr 4</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getGreeting() {
+            const hour = new Date().getHours();
+            if (hour < 12) return "Good Morning";
+            if (hour < 17) return "Good Afternoon";
+            return "Good Evening";
+        }
+
+        const userName = "Dr. Smith";
+        document.getElementById("userName").textContent = userName;
+
+        const profilePicUrl = "/middle-page/profile-placeholder.jpg";
+        document.getElementById("profilePic").src = profilePicUrl;
+
+        function showSection(section) {
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.email-form, .email-list').forEach(content => content.classList.remove('active'));
+
+            document.getElementById(section).classList.add('active');
+            if (section === 'newMail') {
+                document.getElementById('newMailForm').classList.add('active');
+            } else {
+                document.getElementById(`${section}List`).classList.add('active');
+            }
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            document.getElementById(tabName).style.display = 'block';
+            toggleDeleteButton();
+        }
+
+        function sendMail() {
+            const to = document.getElementById('to').value;
+            const subject = document.getElementById('subject').value;
+            const body = document.getElementById('body').value;
+            alert(`Sending mail to ${to}\nSubject: ${subject}\nBody: ${body}`);
+            document.getElementById('to').value = '';
+            document.getElementById('subject').value = '';
+            document.getElementById('body').value = '';
+            showSection('outbox');
+        }
+
+        function toggleDeleteButton() {
+            const checkboxes = document.querySelectorAll('.email-checkbox:checked');
+            const actionBar = document.getElementById('actionBar');
+            actionBar.classList.toggle('active', checkboxes.length > 0);
+        }
+
+        function deleteSelected() {
+            const checkboxes = document.querySelectorAll('.email-checkbox:checked');
+            checkboxes.forEach(checkbox => {
+                checkbox.closest('.email-item').remove();
+            });
+            toggleDeleteButton();
+        }
+
+        document.getElementById('search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.email-item').forEach(item => {
+                const sender = item.querySelector('.email-sender').textContent.toLowerCase();
+                const subject = item.querySelector('.email-subject').textContent.toLowerCase();
+                item.style.display = (sender.includes(searchTerm) || subject.includes(searchTerm)) ? 'flex' : 'none';
+            });
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialSection = urlParams.get('section') || 'inbox';
+        showSection(initialSection);
+        if (initialSection === 'inbox') showTab('primary');
+    </script>
+</body>
+</html>
